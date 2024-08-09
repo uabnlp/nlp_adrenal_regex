@@ -1,4 +1,4 @@
-# Copyright 2024 University of Alabama at Birmingham
+# Copyright 2024 The University of Alabama at Birmingham
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
