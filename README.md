@@ -1,4 +1,6 @@
-# Adrenal Lesion Regex Overview
+# Adrenal Lesion Regex [![DOI](https://zenodo.org/badge/840323428.svg)](https://zenodo.org/doi/10.5281/zenodo.13287864)
+
+
 This tool is currently used at the University of Alabama at Birmingham to identify adrenal lesion incidentalomas. It detects identifies adrenal lesions of clinical interest in clinical text and outputs them to our [custom CoNLL file format](CoNLL.md).  This IOB Named Entity Recognition (NER) pipeline will give PREDICTED_VALUE of "O" for anything which is NOT to be classified resulting in many lines of output.  These can be removed using the `--silence-o` option.
 The CoNLL file format is outputted as a `.txt` file.
 
