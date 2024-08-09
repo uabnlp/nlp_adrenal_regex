@@ -1,12 +1,26 @@
-# Adrenal Regex Classifier
+# Adrenal Lesion Regex Overview
+This tool is currently used at the University of Alabama at Birmingham to identify adrenal lesion incidentalomas. It detects identifies adrenal lesions of clinical interest in clinical text and outputs them to our [custom CoNLL file format](CoNLL.md).  This IOB Named Entity Recognition (NER) pipeline will give PREDICTED_VALUE of "O" for anything which is NOT to be classified resulting in many lines of output.  These can be removed using the `--silence-o` option.
+The CoNLL file format is outputted as a `.txt` file.
 
-This is a regular expression classifier for Adrenal concepts.  It takes in
-electronic health records as text files.  It outputs to our custom CoNLL
-file format.
+## What the Classifier Does
+It uses regular expressions to search for section with "ADRENAL:" or "ADRENALS:"
+on the report. Within that section, it searches using regular expression for the
+following keywords: "adenoma", "lesion", "metastasis", "nodule", "nodularity",
+"mass", "measuring". It is also searches for measurement units in cm or mm, and
+will accept a width x height unit so "5.0 x 8.0 mm".  Any nodules that are under
+1 cm in both dimensions are "unmarked" by the algorithm (meaning discarded as a
+match).  So it would not mark any measurement under 1 cm, and 1 cm+ measurements
+would be marked. Also, the algorithm looks for negation words in a sentance.  So
+if the report had "no nodule", would be and example of negation and that would
+not be marked in the NEGATION field's output.
 
+## Publications
+For additional details see the following abstracts/publications:
+* Slipping Through the Cracks: Use of Natural Language Processing to Retrospectively Identify Adrenal Incidentalomas, Veazey LG, O’Leary AJT, Negrete H, Tridandipani S, Chen H, Gillis A, Fazendin JM, Osborne JD, Lindeman B. American Association of Endocrine Surgeons Annual Meeting, Cleveland, OH, May 22-24, 2022
+* A Natural Language Processing-Informed Adrenal Gland Incidentaloma Clinic Improves Guideline-Based Care. Corbin Frye, Ramsha Akhund, Mohammad Murcy, Lillie Grace Veazey, Chandler McLeod, John D. Osborne, Micah Cochran, Haleigh Negrete, Tobias O’Leary, Srini Tridandipani, Steven Rothenberg, Andrea Gillis, Jessica Fazendin, Herbert Chen, Brenessa Lindeman. World Journal of Surgery (accepted July 2024).
 
-
-The typs of electronic health record that classifier is ran on are:
+## Tested Note Types
+This software has not yet been externally validated, but has been tested internally on the following note types:
 * CT 3D Body Requiring Indep Wkst
 * CT Abdomen and Pelvis w contrast
 * CT Abdomen and Pelvis wo contrast
@@ -51,25 +65,6 @@ The typs of electronic health record that classifier is ran on are:
 * US Abdomen
 
 
-The results are a [custom CoNLL file format](CoNLL.md).  This pipeline will give
-PREDICTED_VALUE of O for anything which is not to be classified (The "O" mean
-Outside in IOB tagging).  These can be removed using the `--silence-o` option.
-
-The CoNLL file format is outputted as a `.txt` file.
-
-
-## What the Classifier Does
-
-It uses regular expressions to search for section with "ADRENAL:" or "ADRENALS:"
-on the report. Within that section, it searches using regular expression for the
-following keywords: "adenoma", "lesion", "metastasis", "nodule", "nodularity",
-"mass", "measuring". It is also searches for measurement units in cm or mm, and
-will accept a width x height unit so "5.0 x 8.0 mm".  Any nodules that are under
-1 cm in both dimensions are "unmarked" by the algorithm (meaning discarded as a
-match).  So it would not mark any measurement under 1 cm, and 1 cm+ measurements
-would be marked. Also, the algorithm looks for negation words in a sentance.  So
-if the report had "no nodule", would be and example of negation and that would
-not be marked in the NEGATION field's output.
 
 # Installation
 
@@ -143,7 +138,9 @@ options:
 Apache License 2.0
 
 # Credits
-This is work done in the Informatics Institute of University of Alabama at Birmingham.
-This is now the Department of Biomedical Informatics and Data Science.
-
-Tobias O'Leary, John D. Osborne, Micah D. Cochran
+This was work done in the Informatics Institute of University of Alabama at Birmingham, which is now the Department of Biomedical Informatics and Data Science. The following people were involved in the algorithm conception, design and implementation.
+* Tobias O'Leary
+* Micah D. Cochran
+* Haleigh Negrete
+* Brenessa Lindeman
+* John D. Osborne
